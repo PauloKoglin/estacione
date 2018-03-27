@@ -1,7 +1,13 @@
 package br.furb.persistence;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.furb.endpoints.usuario.UsuarioPojo;
+import br.furb.model.NecessidadeEntity;
 import br.furb.model.UsuarioEntity;
 
 @Repository
@@ -46,6 +52,21 @@ public class UsuarioDao extends BaseDao<UsuarioEntity, UsuarioPojo> {
 	@Override
 	protected UsuarioPojo newPojo(Object...adicionais) {
 		return new UsuarioPojo();
+	}
+	
+	@Transactional(readOnly = true)
+	public Long getIdByLogin(String usuarioLogin){
+		Criteria UsuarioByLogin = hibernateTemplate
+				.getSessionFactory().getCurrentSession().createCriteria(UsuarioEntity.class);
+		UsuarioByLogin.createAlias("usuario", "usu");
+		UsuarioByLogin.add(Restrictions.eq("usu.ds_login", usuarioLogin));
+		//UsuarioByLogin.setProjection(Projections.max("codigo"));
+		Object uniqueResult = UsuarioByLogin.uniqueResult();
+		if (uniqueResult != null) {
+			return (Long)uniqueResult+1L;
+		}else{
+			return 1L;
+		}
 	}
 
 }

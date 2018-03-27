@@ -16,13 +16,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private EventarDetailService eventarDetailService;
+	private EstacioneDetailService estacioneDetailService;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		Random random = new Random();
 		long adminPassoword = random.nextLong();
-		auth.userDetailsService(eventarDetailService).and().jdbcAuthentication();
+		auth.userDetailsService(estacioneDetailService).and().jdbcAuthentication();
 		System.out.println("Admin password: " + adminPassoword);
 	}
 
@@ -36,6 +36,6 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// SecurityFilter filter = new SecurityFilter();
 		// http.addFilterBefore(filter, BasicAuthenticationFilter.class);
-		http.authorizeRequests().antMatchers("/evento", "/necessidade").hasAnyAuthority("USER");
+		http.authorizeRequests().antMatchers("/estacionamento", "/historico", "/usuario").hasAnyAuthority("USER");
 	}
 }

@@ -27,7 +27,7 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory().withClient("eventar").authorizedGrantTypes("password").scopes("all");
+		clients.inMemory().withClient("estacione").authorizedGrantTypes("password").scopes("all");
 	}
 
 	@Override

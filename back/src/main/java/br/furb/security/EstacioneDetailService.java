@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 import br.furb.model.UsuarioEntity;
 
 @Service
-public class EventarDetailService extends InMemoryUserDetailsManager implements UserDetailsService{
+public class EstacioneDetailService extends InMemoryUserDetailsManager implements UserDetailsService{
 
-	public EventarDetailService() {
+	public EstacioneDetailService() {
 		super(Collections.emptyList());
 	}
 	
-	public EventarDetailService(Collection<UserDetails> users) {
+	public EstacioneDetailService(Collection<UserDetails> users) {
 		super(users);
 	}
 
