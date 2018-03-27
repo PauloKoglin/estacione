@@ -1,0 +1,11 @@
+<ion-view view-title="Estacione" ng-controller="eventosCtrl">
+  <div class="row" ng-controller="mapsEventosCtrl">
+        <ion-content scroll="false">
+          <map on-create="mapCreated(map)"></map>
+        </ion-content>
+        <ion-footer-bar class="bar-stable">
+          <input id="pac-input" class="controls" type="text" placeholder="Para onde vou...">
+          <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+        </ion-footer-bar>
+      </div>
+</ion-view>
