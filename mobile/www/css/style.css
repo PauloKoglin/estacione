@@ -9,6 +9,65 @@ map {
   height: 100%;
 }
 
+.slide-image {
+  opacity: 0.50;
+  filter: alpha(opacity=80);
+}
+
+.page {
+  background: #000000;
+  border-color: transparent;
+  opacity: 0.8;
+}
+
+.slide-title {
+  margin-top: 2.8rem;
+  font-weight: 100;
+  font-size: 130%;
+}
+
+
+/*
+
+
+.tutorial-page {
+
+    background: #fff;
+    border-color: transparent;
+}
+
+.tutorial-page.slide-zoom {
+    height: 100%;
+  }
+
+.tutorial-page.slide-title {
+    margin-top: 2.8rem;
+  }
+
+.tutorial-page.slide-image {
+    max-height: 50%;
+    max-width: 60%;
+    margin: 18px 0;
+  }
+
+  b {
+    font-weight: 500;
+  }
+
+  p {
+    padding: 0 40px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #60646B;}
+
+  b {
+    color: #000000;
+  }
+
+
+*/
+
+
 #pac-input {
   background-color: #fff;
   font-family: Roboto;
@@ -56,7 +115,7 @@ map {
 }
 
 #login {
-  background: #1c2627 url("../img/estacione_background.png") no-repeat center center;
+  /*background: #1c2627 url("../img/estacione_background.png") no-repeat center center;*/
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -88,5 +147,6 @@ img {
 
 }
 }
-}
+
+
 

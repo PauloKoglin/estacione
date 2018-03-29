@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-picker'])
         disableBack: true
       });
     }
-    $rootScope.url = 'https://localhost:8445';//'https://pure-mesa-29909.herokuapp.com';
+    $rootScope.url = 'https://estacioneapp.herokuapp.com';//'https://pure-mesa-29909.herokuapp.com';
     //$rootScope.url = 'https://localhost:8443';
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -23,7 +23,7 @@ angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-picker'])
     }).then(function (modal) {
       $scope.modal = modal;
     });
-
+/*
     // Triggered in the login modal to close it
     $scope.closeLogin = function () {
 
@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-picker'])
       $timeout(function () {
         $scope.closeLogin();
       }, 1000);
-    };
+    };*/
   })
 
   .controller('eventosCtrl', function ($scope, $rootScope, $http, $state, $ionicLoading) {
@@ -81,15 +81,76 @@ angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-picker'])
     $scope.loadEventos();
   })
 
-  .controller('cadastroUsuarioCtrl', function ($scope, $rootScope, $http, $state) {
-    $scope.cadastrarUsuario = function () {
 
+  .controller('escolhaCadastroCtrl', function ($scope, $rootScope, $state, $ionicPopup, $ionicLoading) {
+    $scope.options = {
+        loop: false,
+        effect: 'fade',
+        speed: 100,
+        initialSlide: 0,
+        direction: 'horizontal', //or vertical
+       speed: 300 //0.3s transition
+     };
+
+    $scope.slides = [
+      {
+        title: "Bem vindo ao EstacioneApp!",
+        description: "O <b>EstaioneApp</b> encontra o estacionamento mais próximo de você, assim você não perde tempo dando voltas em busca de um lugar para estacionar seu automóvel.",
+        image: "img/estacione_background.png",
+      },
+      {
+        title: "É fácil de usar!",
+        description: "Basta ler o <b>QRCode</b> através de sua camera ao entrar e sair do estacionamento.",
+        image: "img/qrCode.jpg",
+      }
+    ];
+   })
+
+
+  .controller('cadastroUsuarioCtrl', function ($scope, $rootScope, $http, $state, $ionicPopup, $ionicLoading) {
+    $rootScope.url = 'https://estacioneapp.herokuapp.com';
+
+    $scope.cadastrarUsuario = function (user) {
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+
+      $scope.showAlert = function(titulo, erroMsg) {
+        var alertPopup = $ionicPopup.alert({
+          title: titulo,
+          template: erroMsg
+        });
+        alertPopup.then(function(res) {
+          console.log('Err');
+        });
+      };
+
+      console.log(user);
+      //if (!!$scope.usuario.id) {
+        $http.post($rootScope.url + '/usuario/', user).then(function (response) {
+          $scope.showAlert('Aviso', 'Usuário cadastrado! ID: ' );
+          //$rootScope.cleanHistory();
+          $ionicLoading.hide();
+          $scope.doLogin();
+        }).catch(function (response) {
+          $ionicLoading.hide();
+          $scope.showAlert('Aviso', 'Não foi possível cadastrar usuário: ' + response.data.message);
+          //$state.go('login');
+        });
     }
   })
 
   .controller('LoginCtrl', function ($scope, $rootScope, $stateParams, $state, $http, $ionicPopup, $ionicLoading, $state) {
-    $rootScope.url = 'https://localhost:8445';//'https://pure-mesa-29909.herokuapp.com';
+    $rootScope.url = 'https://estacioneapp.herokuapp.com';//'https://pure-mesa-29909.herokuapp.com';
     $scope.doLogin = function (user) {
+      if (user.nome == "") {
+        $scope.showAlert("Erro", "Informe o usuário");
+      }
+
       $ionicLoading.show({
         content: 'Loading',
         animation: 'fade-in',
@@ -121,9 +182,19 @@ angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-picker'])
         $ionicLoading.hide();
       }).catch(function (response) {
         $ionicLoading.hide();
-        $scope.showAlert('Problema ao conectar', 'Usuário inválido!');
-        $state.go('login');
+        if (response.data.error == "unauthorized") {
+          $scope.showAlert('Problema ao conectar', 'Usuário ou senha inválido!');
+        } else {
+          $scope.showAlert('Problema ao conectar', 'Usuário inválido!');
+        }
+
+        //$state.go('login');
       });
+    }
+
+    $scope.doLogout = function () {
+      window.sessionStorage.setItem('token', null);
+      //$state.go('login');
     }
   })
 

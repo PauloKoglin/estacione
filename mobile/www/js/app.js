@@ -30,13 +30,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
       .state('login', {
         url: '/login',
         templateUrl: 'templates/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        pageTitle: "Entrar"
       })
+
+
+      .state('escolha', {
+        url: '/escolha',
+        templateUrl: 'templates/escolhaCadastro.html'
+
+      })
+
 
       .state('cadastroUsuario', {
         url: '/cadastroUsuario',
         templateUrl: 'templates/cadastroUsuario.html',
-        controller: 'cadastroUsuarioCtrl'
+        controller: 'cadastroUsuarioCtrl',
+        pageTitle: "Novo Usuário"
       })
 
       .state('app', {

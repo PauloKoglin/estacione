@@ -1,28 +1,29 @@
-<ion-view id="login" hide-nav-bar="true">
+<ion-view id="login" hide-nav-bar="true" class="page">
   <ion-content padding="true" scroll="false">
     <form ng-submit="doLogin(user)">
-      <div class="row responsive-md">
+      <div class="row-center responsive-md">
         <div class="col col-50 col-offset-25">
-
-          <div class="header padding text-center">
+          <!--div class="header padding text-center">
             <img width="250"  alt="Your logo here"/> //!- src="img/eventar_logo.PNG" -!
+          </div-->
+          <div class="bar-header padding text-center">
+            <h1 style="color: #eeeeee;">Login</h1>  //!- src="img/eventar_logo.PNG" -!
           </div>
-
           <div class="list">
             <label class="item item-input">
-              <input type="text" placeholder="Usuário" ng-model="user.username">
+              <input type="text" placeholder="Usuário" ng-model="user.username" >
             </label>
             <label class="item item-input">
               <input type="password" placeholder="Senha" ng-model="user.password">
             </label>
-            <button class="button button-small button-block" ui-sref="cadastroUsuario">
+            <button class="button button-royal button-block button-outline" ui-sref="escolha">
               Não tem conta? <b>Cadastre-se!<b>
+            </button>
+            <button class="button button-block button-dark" ng-disabled="!user.username||!user.password">
+              Entrar
             </button>
           </div>
 
-          <button class="button button-block button-positive">
-            Entrar
-          </button>
           <div class="row row-no-padding">
           </div>
         </div>
