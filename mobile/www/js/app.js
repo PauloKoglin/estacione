@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives','ngCordova','timer'])
 
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -38,7 +38,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
       .state('escolha', {
         url: '/escolha',
         templateUrl: 'templates/escolhaCadastro.html'
-
       })
 
 
@@ -47,6 +46,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
         templateUrl: 'templates/cadastroUsuario.html',
         controller: 'cadastroUsuarioCtrl',
         pageTitle: "Novo Usuário"
+      })
+
+      .state('cadastroEstacionamento', {
+        url: '/cadastroEstacionamento',
+        templateUrl: 'templates/cadastroEstacionamento.html'
       })
 
       .state('app', {
@@ -79,6 +83,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
         views: {
           'menuContent': {
             templateUrl: 'templates/estacioneMain.html'
+          }
+        }
+      })
+
+      .state('app.estadia', {
+        url: '/estadia',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/estadia.html',
+            controller: 'estadiaCtrl'
           }
         }
       })
