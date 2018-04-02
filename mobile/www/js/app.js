@@ -97,6 +97,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
         }
       })
 
+      .state('app.historicoEstadia', {
+        url: '/historicoEstadia',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/historicoEstadia.html',
+            controller: 'estadiaCtrl'
+          }
+        }
+      })
+
       .state('app.eventosList', {
         url: '/eventosList',
         views: {

@@ -1,5 +1,5 @@
-<ion-view id="deviceready" hide-nav-bar="false" class="page">
-  <ion-content padding="true" scroll="false" ng-controller="estadiaCtrl" >
+<ion-view id="deviceready" hide-nav-bar="false" class="page" >
+  <ion-content padding="true" scroll="false" ng-controller="estadiaCtrl" ng-init="verificaEstadiaAndamento()">
       <div class="bar-header padding text-center">
         <h1 class="title" style="color: #eeeeee;">
           Estadia
@@ -9,12 +9,12 @@
       <div class="row responsive-md">
         <div class="col col-50 col-offset-25">
           <div class="button-bar-inline">
-            <div ng-show="isEstadiaAndamento()" class="list-item" ng-init="timerType = 'Polling Server'">
+            <div ng-show="isEstadiaAndamento()" class="list-item" timer-controls ng-init="timerType = 'Polling Server'">
               <h2 class="title" style="color: #eeeeee;">
                  Estadia em andamento
               </h2>
               <h4 class="title" style="color: #eeeeee;">
-                <timer interval="1000" auto-start="false"">
+                <timer start-time="startTime" interval="1000" auto-start="false"">
                   Tempo decorrido : {{hhours}}:{{mminutes}}:{{sseconds}}
 
                   <!--br>Preço Estimado : R$ <span ng-bind="seconds * getTimeTimer(sseconds)"></span></br-->
@@ -29,13 +29,5 @@
           </div>
         </div>
       </div>
-    <div class="list">
-      <a class="item item-thumbnail-left" href="#">
-        <img src="">
-        <h2>Estacionamento Legal</h2>
-        <p>Tempo decorrido: 01:30:15</p>
-      </a>
-    </div>
-
   </ion-content>
 </ion-view>
