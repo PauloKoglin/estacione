@@ -155,7 +155,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
       });
     // if none of the above states are matched, use this as the fallback
     if (!!window.sessionStorage.getItem('login') && window.sessionStorage.getItem('password')) {
-      $urlRouterProvider.otherwise('/app/eventos');
+      $urlRouterProvider.otherwise('/app/estacioneMain');
     } else {
       $urlRouterProvider.otherwise('/login');
     }

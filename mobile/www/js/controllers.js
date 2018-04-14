@@ -447,65 +447,111 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     })
 
 
-    .controller('mapsEstacionamentosCtrl', function ($scope, $ionicLoading, $state, $http, $rootScope) {
+    .controller('mapsEstacionamentosCtrl', function ($scope, $ionicLoading, $state, $http, $rootScope, $ionicPopup) {
+      var distancia = 0;
+
       $scope.mapCreated = function (map) {
         $scope.map = map;
+        var latitudeAtual = 0;
+        var longitudeAtual = 0;
 
-        $scope.centerOnMe();
-        carregarEstacionamentos();
+
+        $ionicLoading.show({
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: true,
+          maxWidth: 200,
+          showDelay: 0
+        });
+
+        $scope.showAlert = function(titulo, erroMsg) {
+          var alertPopup = $ionicPopup.alert({
+            title: titulo,
+            template: erroMsg
+          });
+          alertPopup.then(function(res) {
+            console.log('Err');
+          });
+        };
+
+        navigator.geolocation.getCurrentPosition(function (pos) {
+          console.log('Achou Posicao: ', pos);
+          $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+          console.log("Adicionando posicao atual");
+          latitudeAtual = pos.coords.latitude;
+          longitudeAtual = pos.coords.longitude;
+
+          var markerPos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+          var marker = new google.maps.Marker({
+            map: $scope.map,
+            animation: google.maps.Animation.DROP,
+            position: markerPos
+          });
+          carregarEstacionamentos();
+        }, function (error) {
+          alert('Unable to get location: ' + error.message);
+        });
 
         function carregarEstacionamentos() {
           $http.get($rootScope.url + '/estacionamento?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
             $scope.retorno = response;
 
             var estacionamentos = $scope.retorno.data;
-            console.log("estacionamentos: ", estacionamentos);
 
-            //for (var j = 0; j < eventos.; j++) {
             var records = estacionamentos;
-
             for (var i = 0; i < records.length; i++) {
-
               var record = records[i];
               var markerPos = new google.maps.LatLng(record.latitude, record.longitude);
+              var duration = 0;
+              //var distancia = 0;
+              //var from = null;
+              //var to = null;
 
-              console.log(record);
+              var marker = new google.maps.Marker({
+                map: $scope.map,
+                animation: google.maps.Animation.DROP,
+                position: markerPos,
+                label: 'E'
+              });
 
-              /*if (record.mine) {
-                // Add the markerto the map
-                var icone = {
-                  url: 'img/icone-maps.png',
-                  size: new google.maps.Size(80, 80),
-                  resize: new google.maps.Size(80, 80),
-                  origin: new google.maps.Point(0, 0),
-                  anchor: new google.maps.Point(0, 32)
-                };
-                var marker = new google.maps.Marker({
-                  map: $scope.map,
-                  animation: google.maps.Animation.DROP,
-                  position: markerPos,
-                  icon: icone
-                });
-              } else {*/
-                var marker = new google.maps.Marker({
-                  map: $scope.map,
-                  animation: google.maps.Animation.DROP,
-                  position: markerPos,
-                  label: 'E'
-                });
-              //}
+              var service = new google.maps.DistanceMatrixService();
+              service.getDistanceMatrix(
+                {
+                  origins: [new google.maps.LatLng(latitudeAtual, longitudeAtual)],
+                  destinations: [new google.maps.LatLng(record.latitude, record.longitude)],
+                  travelMode: 'DRIVING',
+                  //transitOptions: TransitOptions,
+                  drivingOptions: {
+                    departureTime: new Date(Date.now() + 1),  // for the time N milliseconds from now.
+                    trafficModel: 'optimistic'
+                  },
+                  //unitSystem: google.maps.UnitSystem.IMPERIAL,
+                  avoidHighways: false,
+                  avoidTolls: false,
+                }, callback);
 
-              /*
-              var infoWindowContent = "<h4><link rel=\"stylesheet\" type=\"text/css\" href=" + record.urlFacebook + ">" + record.nome + " </h4>" +
-                  "<img src=" + record.urlImagem + " height=\"100\" width=\"100\" >" + " <br>" +
-                  "Data: " + record.dtInicial + " até " + record.dtFinal + "<br>" +
-                  "Organizado por: " + record.usuario.nome + "<br>" +
-                  '<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.lat + ',' + record.lng + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
-                ;
-              */
+              function callback(response, status) {
+                if (status == 'OK') {
+                  //var originList = response.originAddresses;
+                  var destinationList = response.destinationAddresses;
+
+                  for (var i = 0; i < destinationList.length; i++) {
+                    var results = response.rows[i].elements;
+                    for (var j = 0; j < results.length; j++) {
+                      var element = results[j];
+                      distancia = element.distance.text;
+                      //duration = element.duration;
+                      console.log(distancia);
+                      //from = origins[i];
+                      //to = destinations[j];
+                    }
+                  }
+                }
+              }
 
               var infoWindowContent = "<h4>" + record.nome + " </h4><br>" +
                   "Preço: R$" + record.preco + "<br>" +
+                  "À "+ distancia + " de você. <br>"+
                   '<a href="geo:?daddr='+ record.latitude + ',' + record.longitude +' target=\"_system\"> <span> Como chegar </span> </a></br>'+
                   '<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.latitude + ',' + record.longitude + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
                 ;
@@ -524,11 +570,14 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
                 infoWindow.open($scope.map, marker);
               });
             }
-
+            $ionicLoading.hide();
           }).catch(function (response) {
+            $ionicLoading.hide();
+            $scope.showAlert(response.data.error);
             console.log("deu merda");
           });
         };
+
         // Create the search box and link it to the UI element.
         var input = document.getElementById('pac-input');
         $scope.searchBox = new google.maps.places.SearchBox(input);
@@ -582,10 +631,9 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           console.log('Got pos', pos);
           $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
           console.log("Adicionando posicao atual");
-          //$scope.marker = new google.maps.Marker({
-          //  map: $scope.map,
-          //  position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
-          //});
+          latitudeAtual = pos.coords.latitude;
+          longitudeAtual = pos.coords.longitude;
+
           var markerPos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
           var marker = new google.maps.Marker({
             map: $scope.map,
@@ -982,30 +1030,10 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
         $scope.estadiasUsuario = $scope.retorno.data;
 
         for (var i = 0; i < $scope.estadiasUsuario.length; i++) {
-          $scope.estadiasUsuario[i].dataEntrada = new Date($scope.estadiasUsuario[i].dataEntrada);//record.dataEntrada;
-          $scope.estadiasUsuario[i].dataSaida = new Date($scope.estadiasUsuario[i].dataSaida);//record.dataEntrada;
-          //console.log($scope.estadiasUsuario[i].dataEntrada);
+          $scope.estadiasUsuario[i].dataEntrada = new Date($scope.estadiasUsuario[i].dataEntrada);
+          $scope.estadiasUsuario[i].dataSaida = new Date($scope.estadiasUsuario[i].dataSaida);
         }
          console.log($scope.estadiasUsuario);
-
-        /*
-          var records = eventos;
-
-          for (var i = 0; i < records.length; i++) {
-
-            var record = records[i];
-
-
-            var infoWindowContent = "<h4><link rel=\"stylesheet\" type=\"text/css\" href=" + record.urlFacebook + ">" + record.nome + " </h4>" +
-                "<img src=" + record.urlImagem + " height=\"100\" width=\"100\" >" + " <br>" +
-                "Data: " + record.dtInicial + " até " + record.dtFinal + "<br>" +
-                "Organizado por: " + record.usuario.nome + "<br>" +
-                '<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.lat + ',' + record.lng + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
-              ;
-
-            adicionarResumoInfo(marker, infoWindowContent, record);
-
-        }*/
 
       }).catch(function (response) {
         GlobalFunctions.showAlert('Erro', 'Não foi possível consultar estadias: ' + response.data.message);
@@ -1017,35 +1045,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
       $scope.$broadcast('reset');
     });
     */
-    /*document.addEventListener("deviceready", function () {
 
-      $scope.scanNow = function() {
-        $cordovaBarcodeScanner
-          .scan()
-          .then(function(barcodeData) {
-
-            // Success! Barcode data is here
-            console.log(barcodeData);
-          }, function(error) {
-            // An error occurred
-            console.log(error);
-          });
-
-      }
-
-      // NOTE: encoding not functioning yet
-      $scope.generateQrCode = function () {
-        $cordovaBarcodeScanner
-          .encode(BarcodeScanner.Encode.TEXT_TYPE, "teste")
-          .then(function(success) {
-            // Success!
-          }, function(error) {
-            // An error occurred
-          });
-      }
-
-
-    }, false);*/
 
   });
 
