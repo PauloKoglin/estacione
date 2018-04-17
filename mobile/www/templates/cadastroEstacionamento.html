@@ -1,10 +1,10 @@
-  <ion-view view-title="Estacionamento" ng-controller="estacionamentoCtrl">
-    <ion-slides options="swiperOptions" slider="swiper" ion-wizard>
+  <ion-view title="Estacionamento" ng-controller="estacionamentoCtrl">
+    <ion-slides scroll="false" options="swiperOptions" slider="swiper" ion-wizard>
 
-      <ion-slide-page ion-wizard-step>
+      <ion-slide-page ion-wizard-step >
         <ion-content class="page">
           <div class="bar-header padding text-center">
-            <h1 class="title" style="color: #eeeeee;">Estacionamento</h1>
+            <h3 class="title" style="color: #eeeeee;">Novo Estacionamento</h3>
           </div>
           <div class="row">
             <div class="col col-center">
@@ -22,35 +22,51 @@
                     <label class="item item-input">
                       <textarea type="text" placeholder="Complemento do endereço" ng-model="estacionamento.complementoLocalizacao"></textarea>
                     </label>
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <ion-footer-bar class="bar-subfooter bar-dark">
+            <div class="col col-center">
+               <button class="button button-block button-dark" ion-wizard-next>
+                 <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
+                </button>
+            </div>
+          </ion-footer-bar>
           <ion-footer-bar class="bar-stable">
-
           </ion-footer-bar>
         </ion-content>
       </ion-slide-page>
       <ion-slide-page ion-wizard-step>
-        <div class="row">
+        <div class="row" id="pac-container">
           <ion-content scroll="false" class="page">
             <div class="bar-header padding text-center">
-              <h1 class="title" style="color: #eeeeee;">Localização</h1>
+              <h2 class="title" style="color: #eeeeee;">Localização</h2>
             </div>
-            <input id="pac-input" class="controls item-block" type="text" placeholder="Localização do estacionamento">
+            <input id="pac-input" class="controls item-block" type="text" ng-focus="disableTap()" placeholder="Localização do estacionamento">
             <map on-create="mapCreated(map)"></map>
           </ion-content>
+          <ion-footer-bar class="bar-subfooter bar-dark">
+            <div class="col col-center">
+              <button class="button button-block button-dark" ion-wizard-previous>
+                <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
+              </button>
+            </div>
+            <div class="col col-center">
+              <button class="button button-block button-dark" ion-wizard-next>
+                <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
+              </button>
+            </div>
+          </ion-footer-bar>
           <ion-footer-bar class="bar-stable">
-
           </ion-footer-bar>
         </div>
       </ion-slide-page>
       <ion-slide-page ion-wizard-step>
         <ion-content class="page">
           <div class="bar-header padding text-center">
-            <h1 class="title" style="color: #eeeeee;">Dias da Semana</h1>
+            <h2 class="title" style="color: #eeeeee;">Dias da Semana</h2>
           </div>
           <div class="row">
             <div class="col col-center">
@@ -84,19 +100,27 @@
                           Domingo
                         </ion-checkbox>
                       </ion-list>
-
-
-                      <!--button class="button button-small icon ion-plus" ng-click="addNecessidade()"></button>
-                      <button class="button button-small icon ion-minus" ng-click="removeNecessidade($index)"></button>
-                      <div class="col col-10">
-                        <small style="width: 20%">Contribuidor: {{necessidade.contribuidor}}</small>
-                      </div-->
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <ion-footer-bar class="bar-subfooter bar-dark">
+            <div class="col col-center">
+              <button class="button button-block button-dark" ion-wizard-previous>
+                <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
+              </button>
+            </div>
+            <div class="col col-center">
+              <button class="button button-block button-dark" ion-wizard-next>
+                <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
+              </button>
+            </div>
+
+          </ion-footer-bar>
+          <ion-footer-bar class="bar-stable">
+          </ion-footer-bar>
         </ion-content>
       </ion-slide-page>
       <ion-slide-page ion-wizard-step >
@@ -158,12 +182,24 @@
                       Domingo
                     </ion-item>
                   </ion-list>
-                  <button class="button button-block button-dark" ng-click="inserirEstacionamento()">
-                    Começar!
-                  </button>
                 </div>
               </div>
             </div>
+            <ion-footer-bar class="bar-subfooter bar-dark">
+              <div class="col col-center">
+                <button class="button button-block button-dark" ion-wizard-previous>
+                  <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
+                </button>
+              </div>
+              <div class="item-divider-platform"></div>
+              <div class="col col-center">
+                <button class="button button-block button-dark" ng-click="inserirEstacionamento()">
+                  Finalizar!
+                </button>
+              </div>
+            </ion-footer-bar>
+            <ion-footer-bar class="bar-stable">
+            </ion-footer-bar>
           </div>
         </ion-content>
       </ion-slide-page>

@@ -62,7 +62,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
 
       var req = {
         method: 'POST',
-        url: serverUrl + '/oauth/token?grant_type=password&username=' + user.username + '&password=' + user.password,
+        url: serverUrl + '/oauth/token?grant_type=password&username=' + user.username.toLowerCase() + '&password=' + user.password,
       };
       $http(req).then(function (response) {
         window.sessionStorage.setItem('token', response.data.access_token);
@@ -95,7 +95,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
         disableBack: true
       });
     }
-    $rootScope.url = 'https://estacioneapp.herokuapp.com';//'https://pure-mesa-29909.herokuapp.com';
+    $rootScope.url = 'https://estacioneapp.herokuapp.com';
     //$rootScope.url = 'https://localhost:8443';
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -295,9 +295,16 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     }
   })
 
+    .controller('MenuCtrl', function ($scope, $rootScope, $stateParams, $state, $http, $ionicPopup, $ionicLoading) {
+      $scope.nomeUsuario = window.sessionStorage.getItem('username');
+      console.log($scope.nomeUsuario);
+    })
+
+
   .controller('LoginCtrl', function ($scope, $rootScope, $stateParams, $state, $http, $ionicPopup, $ionicLoading) {
     window.sessionStorage.setItem('token', null);
     window.sessionStorage.setItem('motorista', null);
+    window.sessionStorage.setItem('username', null);
 
     $rootScope.url = 'https://estacioneapp.herokuapp.com';//'https://pure-mesa-29909.herokuapp.com';
     $scope.doLogin = function (user) {
@@ -319,26 +326,17 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           console.log('Err');
         });
       };
-/*
-      $http.get($rootScope.url + '/usuario?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
-        $scope.retorno = response;
-
-        var eventos = $scope.retorno.data;
-        console.log("Eventos: ", eventos);
-
-      }).catch(function (response) {
-
-      });
-    */
-
 
       var req = {
         method: 'POST',
         url: $rootScope.url + '/oauth/token?grant_type=password&username=' + user.username + '&password=' + user.password,
       };
+
       $http(req).then(function (response) {
         window.sessionStorage.setItem('token', response.data.access_token);
         $scope.usuario = response.data;
+        window.sessionStorage.setItem('username', user.username);
+
         //localStorage.setItem('token', response.data.access_token);
         $rootScope.$broadcast('login')
         $ionicLoading.hide();
@@ -448,13 +446,11 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
 
 
     .controller('mapsEstacionamentosCtrl', function ($scope, $ionicLoading, $state, $http, $rootScope, $ionicPopup) {
-      var distancia = 0;
-
       $scope.mapCreated = function (map) {
         $scope.map = map;
         var latitudeAtual = 0;
         var longitudeAtual = 0;
-
+        var distanciaEstacionamento = '';
 
         $ionicLoading.show({
           content: 'Loading',
@@ -489,30 +485,29 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           });
           carregarEstacionamentos();
         }, function (error) {
-          alert('Unable to get location: ' + error.message);
-        });
+          $scope.showAlert('Não foi possível obter sua localização: ' + error.message);
+          $ionicLoading.hide();
+        }, {timeout:50000});
 
         function carregarEstacionamentos() {
           $http.get($rootScope.url + '/estacionamento?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
             $scope.retorno = response;
-
+            //$rootScope.distancia = '';
             var estacionamentos = $scope.retorno.data;
 
             var records = estacionamentos;
             for (var i = 0; i < records.length; i++) {
               var record = records[i];
-              var markerPos = new google.maps.LatLng(record.latitude, record.longitude);
-              var duration = 0;
-              //var distancia = 0;
-              //var from = null;
-              //var to = null;
 
-              var marker = new google.maps.Marker({
+
+
+              /*var marker = new google.maps.Marker({
                 map: $scope.map,
                 animation: google.maps.Animation.DROP,
                 position: markerPos,
                 label: 'E'
-              });
+              });*/
+
 
               var service = new google.maps.DistanceMatrixService();
               service.getDistanceMatrix(
@@ -531,37 +526,49 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
                 }, callback);
 
               function callback(response, status) {
-                if (status == 'OK') {
-                  //var originList = response.originAddresses;
-                  var destinationList = response.destinationAddresses;
+                var p1 =  new Promise(function () {
+                  var markerPos = new google.maps.LatLng(record.latitude, record.longitude);
+                  var marker = new google.maps.Marker({
+                    map: $scope.map,
+                    animation: google.maps.Animation.DROP,
+                    position: markerPos,
+                    label: 'E'
+                  });
+                  if (status == 'OK') {
+                    var destinationList = response.destinationAddresses;
+                    for (var i = 0; i < destinationList.length; i++) {
+                      var results = response.rows[i].elements;
+                      for (var j = 0; j < results.length; j++) {
+                        var element = results[j];
+                        if (element.status != 'ZERO_RESULTS') {
+                          if (element.distance.text != '')
+                            distanciaEstacionamento = element.distance.text;
+                          //console.log("distancia:"+distanciaEstacionamento);
 
-                  for (var i = 0; i < destinationList.length; i++) {
-                    var results = response.rows[i].elements;
-                    for (var j = 0; j < results.length; j++) {
-                      var element = results[j];
-                      distancia = element.distance.text;
-                      //duration = element.duration;
-                      console.log(distancia);
-                      //from = origins[i];
-                      //to = destinations[j];
+                          var infoWindowContent = "<h4>" + record.nome + " </h4><br>" +
+                              "Preço: R$" + record.preco + "<br>" +
+                              "À "+ distanciaEstacionamento + " de você. <br>"+
+                              '<a href="geo:?daddr='+ record.latitude + ',' + record.longitude +' target=\"_system\"> <span> Como chegar </span> </a></br>'
+                            //'<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.latitude + ',' + record.longitude + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
+                            ;
+
+                          var infoWindow = new google.maps.InfoWindow({
+                            content: infoWindowContent
+                          });
+
+                          google.maps.event.addListener(marker, 'click', function () {
+                            infoWindow.open($scope.map, marker);
+                          });
+                        }
+                      }
                     }
                   }
-                }
+                })
               }
-
-              var infoWindowContent = "<h4>" + record.nome + " </h4><br>" +
-                  "Preço: R$" + record.preco + "<br>" +
-                  "À "+ distancia + " de você. <br>"+
-                  '<a href="geo:?daddr='+ record.latitude + ',' + record.longitude +' target=\"_system\"> <span> Como chegar </span> </a></br>'+
-                  '<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.latitude + ',' + record.longitude + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
-                ;
-
-              adicionarResumoInfo(marker, infoWindowContent, record);
-
             }
-            //}
 
-            function adicionarResumoInfo(marker, message, record) {
+
+            /*function adicionarResumoInfo(marker, message, record) {
               var infoWindow = new google.maps.InfoWindow({
                 content: message
               });
@@ -569,7 +576,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
               google.maps.event.addListener(marker, 'click', function () {
                 infoWindow.open($scope.map, marker);
               });
-            }
+            }*/
             $ionicLoading.hide();
           }).catch(function (response) {
             $ionicLoading.hide();
@@ -649,6 +656,14 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
 
   .controller('estacionamentoCtrl', function ($scope, $rootScope, $http, $state, $ionicHistory, $stateParams, $ionicLoading, GlobalFunctions, $ionicModal) {
     $rootScope.url = 'https://estacioneapp.herokuapp.com';
+
+    $scope.swiperOptions = {
+      loop: false,
+      effect: 'slide',
+      speed: 500,
+      onlyExternal: true
+    }
+
     //carrega
     $ionicModal.fromTemplateUrl('my-modal.html', {
       scope: $scope,
@@ -735,6 +750,16 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     */
     $scope.estacionamento = {};
 
+    $scope.disableTap = function(){
+      container = document.getElementsByClassName('pac-container');
+      // disable ionic data tab
+      angular.element(container).attr('data-tap-disabled', 'true');
+      // leave input field if google-address-entry is selected
+      angular.element(container).on("click", function(){
+        document.getElementById('pac-input').blur();
+      });
+    }
+
     $scope.mapCreated = function (map) {
       $scope.map = map;
       $scope.centerOnMe();
@@ -762,7 +787,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
 
       $scope.searchBox.addListener('places_changed', function () {
         $scope.places = $scope.searchBox.getPlaces();
-
+        console.log("alterou local...");
         if ($scope.places.length == 0) {
           return;
         }

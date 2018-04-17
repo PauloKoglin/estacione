@@ -3,27 +3,26 @@
     <form ng-submit="doLogin(user)">
       <div class="row-center responsive-md">
         <div class="col col-50 col-offset-25">
-          <!--div class="header padding text-center">
-            <img width="250"  alt="Your logo here"/> //!- src="img/eventar_logo.PNG" -!
-          </div-->
           <div class="bar-header padding text-center">
-            <h1 style="color: #eeeeee;">Login</h1>  //!- src="img/eventar_logo.PNG" -!
+            <h1 style="color: #eeeeee;">Login</h1>
           </div>
           <div class="list">
             <label class="item item-input">
-              <input type="text" placeholder="Usuário" ng-model="user.username" >
+              <input type="text" placeholder="Digite seu usuário" ng-model="user.username" >
             </label>
             <label class="item item-input">
-              <input type="password" placeholder="Senha" ng-model="user.password">
+              <input type="password" placeholder="Digite sua senha" ng-model="user.password">
             </label>
-            <button class="button button-block button-icon" ui-sref="escolha">
-              Não tem conta? <b>Cadastre-se!<b>
-            </button>
             <button class="button button-block button-dark" ng-disabled="!user.username||!user.password">
               Entrar
             </button>
+            <button class="button button-block button-small button-icon" ui-sref="escolha">
+              <b>Esqueci minha senha<b>
+            </button>
+            <button class="button button-block button-icon" ui-sref="escolha">
+              Não tem conta? <b>Cadastre-se!<b>
+            </button>
           </div>
-
           <div class="row row-no-padding">
           </div>
         </div>
