@@ -13,7 +13,7 @@
             <label class="item item-input">
               <input type="password" placeholder="Digite sua senha" ng-model="user.password">
             </label>
-            <button class="button button-block button-dark" ng-disabled="!user.username||!user.password">
+            <button class="button button-block button-dark" ng-disabled="!user.username&&!user.password">
               Entrar
             </button>
             <button class="button button-block button-small button-icon" ui-sref="escolha">

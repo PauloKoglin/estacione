@@ -1,31 +1,19 @@
 <ion-view view-title="Histórico" class="page" >
   <ion-content on-swipe-down="" " ng-controller="estadiaCtrl" ng-init="carregarEstadiasUsuario()">
-      <!--ion-list ng-repeat="estadia in estadiasUsuario">
-        <ion-item >
-          <img src="">
-          <h2>{{estadia.estacionamento.nome}}</h2>
-          <p>Entrada: {{estadia.dataEntrada}} - Saída: {{estadia.dataSaida}}</p>
-          <p>Valor pago: {{estadia.valorTotall}}</p>
-        </ion-item>
-        <ion-item ng-show="!estadiasUsuario" class="item item-input-inset">
-          <h2>Nenhuma estadia encontrada.</h2>
-        </ion-item>
-      </ion-list-->
       <div class="list">
         <a ng-repeat="e in estadiasUsuario" class="item item-avatar-left">
           <img src="img/icone-maps.png">
-          <h2>teste</h2>
-
-          <p>Entrada: {{e.dataEntrada | date: 'dd/MM/yyyy HH:mm'}} <br> Saída: {{e.dataSaida | date: 'dd/MM/yyyy HH:mm'}}</p>
-
-          <p ng-if="e.preco > 0">Valor pago: R${{estadia.preco}}</p>
-          <p ng-if="e.preco == 0">Valor pago: Livre até 15 minutos</p>
+          <h2>{{e.estacionamento.nome}}</h2>
+          <p>Entrada: {{e.dataEntrada | date: 'dd/MM/yyyy HH:mm'}}</p>
+          <p ng-if="e.dataSaida > 0">Saída: {{e.dataSaida | date: 'dd/MM/yyyy HH:mm'}}</p>
+          <p ng-if="e.dataSaida == null">Saída: Em andamento...</p>
+          <p ng-if="e.preco > 0.0">Valor pago: {{e.preco | currency:'R$':2 }}</p>
+          <p ng-if="e.preco == 0.0">Valor pago: Livre até 15 minutos</p>
         </a>
         <a ng-if="estadiasUsuario.length == 0" class="item item-placeholder">
           <h2>Nenhuma estadia encontrada.</h2>
         </a>
       </div>
-
   </ion-content>
 </ion-view>
 

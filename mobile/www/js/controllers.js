@@ -209,7 +209,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     $rootScope.url = 'https://estacioneapp.herokuapp.com';
 
     $scope.setUserMotorista = function (param) {
-      if (param) {
+      if (param == true) {
         window.sessionStorage.setItem('motorista', true);
       } else {
         window.sessionStorage.setItem('motorista', false);
@@ -276,12 +276,11 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
       console.log(user);
       //if (!!$scope.usuario.id) {
         $http.post($rootScope.url + '/usuario/', user).then(function (response) {
-          $scope.showAlert('Aviso', 'Usuário cadastrado! ID: ' );
           //$rootScope.cleanHistory();
-          $ionicLoading.hide();
           user.username = response.data.login;
           user.password = response.data.senha;
           $scope.doLogin(user);
+          $ionicLoading.hide();
           if (user.tipoUsuario == 'M') {
             $state.go('app.estacioneMain');
           } else {
@@ -290,7 +289,6 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
         }).catch(function (response) {
           $ionicLoading.hide();
           $scope.showAlert('Aviso', 'Não foi possível cadastrar usuário: ' + response.data.error);
-          //$state.go('login');
         });
     }
   })
@@ -358,7 +356,78 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     }
   })
 
+    .controller('pagamentoCtrl', function ($scope, $rootScope, $stateParams, $state, $http, $ionicPopup, $ionicLoading) {
+      $rootScope.url = 'https://estacioneapp.herokuapp.com';//'https://pure-mesa-29909.herokuapp.com';
+      $rootScope.cardUrl = 'https://apisandbox.cieloecommerce.cielo.com.br/1/card/';
+      $scope.formaPagamento = {};
+      $scope.cartao = {};
 
+      $scope.showAlert = function(titulo, erroMsg) {
+        var alertPopup = $ionicPopup.alert({
+          title: titulo,
+          template: erroMsg
+        });
+        alertPopup.then(function(res) {
+          console.log('Err');
+        });
+      };
+
+      $scope.cadastrarCartao = function (cartao) {
+        $ionicLoading.show({
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: true,
+          maxWidth: 200,
+          showDelay: 0
+        });
+
+        $scope.formaPagamento.numero = cartao.numero;
+        $scope.formaPagamento.nomeCartao = cartao.nome;
+        $scope.formaPagamento.validade = cartao.mes + '/' + cartao.ano;
+        $scope.formaPagamento.codigoSeguranca = cartao.codigo;
+        $scope.formaPagamento.bandeira = 'Visa';
+        $http.post($rootScope.url + '/formaPagamento/?access_token=' + window.sessionStorage.getItem('token'), $scope.formaPagamento).then(function (response) {
+          $scope.formaPagamento = response.date;
+          console.log($scope.formaPagamento);
+          $ionicLoading.hide();
+          $scope.showAlert('Aviso', 'Dados gravados!');
+        }).catch(function (response) {
+          $ionicLoading.hide();
+          $scope.showAlert('Aviso', 'Não foi possível cadastrar cartão: ' + response.data.error);
+        });
+      }
+
+      $scope.carregarCartao = function () {
+        $ionicLoading.show({
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: true,
+          maxWidth: 200,
+          showDelay: 0
+        });
+
+        console.log("buscando forma de pagamento..");
+        $http.get($rootScope.url + '/formaPagamento/?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
+          $scope.formaPagamento = response.data;
+          var formaPagamentoList = $scope.formaPagamento;
+          for (var i = 0; i < formaPagamentoList.length; i++) {
+            $scope.cartao.numero = formaPagamentoList[i].numero;
+            $scope.cartao.nome = formaPagamentoList[i].nomeCartao;
+            $scope.cartao.mes = formaPagamentoList[i].validade.substring(0,2);
+            $scope.cartao.ano = parseInt(formaPagamentoList[i].validade.substring(3,7), $scope.cartao.ano);
+            $scope.cartao.codigo = parseInt(formaPagamentoList[i].codigoSeguranca, $scope.cartao.codigo);
+          }
+            console.log($scope.cartao);
+          $ionicLoading.hide();
+        }).catch(function (response) {
+          $ionicLoading.hide();
+          $scope.showAlert('Aviso', 'Não foi possível carregar cartão: ' + response.data.error);
+        });
+      }
+
+    })
+
+/*
     .controller('novoEventoWizardController', function ($scope, $ionicLoading) {
       $scope.mapCreated = function (map) {
         $scope.map = map;
@@ -444,13 +513,65 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
       }
     })
 
-
+*/
     .controller('mapsEstacionamentosCtrl', function ($scope, $ionicLoading, $state, $http, $rootScope, $ionicPopup) {
+      var latitudeAtual = 0;
+      var longitudeAtual = 0;
+
+      $scope.disableTap = function(){
+        container = document.getElementsByClassName('pac-container');
+        // disable ionic data tab
+        angular.element(container).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function(){
+          document.getElementById('pac-input').blur();
+        });
+      }
+
+      function calcularDistancia(marker, latitudeAtual, longitudeAtual) {
+        var service = new google.maps.DistanceMatrixService();
+        var distanciaEstacionamento = '';
+        service.getDistanceMatrix(
+          {
+            origins: [new google.maps.LatLng(latitudeAtual, longitudeAtual)],
+            destinations: [new google.maps.LatLng(marker.latitude, marker.longitude)],
+            travelMode: 'DRIVING',
+            drivingOptions: {
+              departureTime: new Date(Date.now() + 1),  // for the time N milliseconds from now.
+              trafficModel: 'optimistic'
+            },
+            avoidHighways: false,
+            avoidTolls: false,
+          }, callback);
+
+        function callback(response, status) {
+          var p1 =  new Promise(function () {
+
+            if (status == 'OK') {
+              var destinationList = response.destinationAddresses;
+              for (var i = 0; i < destinationList.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                  var element = results[j];
+                  if (element.status != 'ZERO_RESULTS') {
+                    if (element.distance.text != '')
+                      distanciaEstacionamento = element.distance.text;
+                    console.log("distancia:"+distanciaEstacionamento);
+
+
+                  }
+                }
+              }
+            }
+            return distanciaEstacionamento;
+          })
+        }
+      }
+
       $scope.mapCreated = function (map) {
         $scope.map = map;
-        var latitudeAtual = 0;
-        var longitudeAtual = 0;
-        var distanciaEstacionamento = '';
+        $scope.estacionamentos = [];
+
 
         $ionicLoading.show({
           content: 'Loading',
@@ -481,7 +602,8 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           var marker = new google.maps.Marker({
             map: $scope.map,
             animation: google.maps.Animation.DROP,
-            position: markerPos
+            position: markerPos,
+            icon: { url : 'img/bluecircle.png' }
           });
           carregarEstacionamentos();
         }, function (error) {
@@ -489,95 +611,59 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           $ionicLoading.hide();
         }, {timeout:50000});
 
+
+
+
         function carregarEstacionamentos() {
           $http.get($rootScope.url + '/estacionamento?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
             $scope.retorno = response;
             //$rootScope.distancia = '';
-            var estacionamentos = $scope.retorno.data;
+            $scope.estacionamentos = $scope.retorno.data;
 
-            var records = estacionamentos;
+            var records = $scope.estacionamentos;
             for (var i = 0; i < records.length; i++) {
               var record = records[i];
+              var preco = record.preco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
 
-
-
-              /*var marker = new google.maps.Marker({
+              var markerPos = new google.maps.LatLng(record.latitude, record.longitude);
+              var marker = new google.maps.Marker({
                 map: $scope.map,
                 animation: google.maps.Animation.DROP,
                 position: markerPos,
-                label: 'E'
-              });*/
-
-
-              var service = new google.maps.DistanceMatrixService();
-              service.getDistanceMatrix(
-                {
-                  origins: [new google.maps.LatLng(latitudeAtual, longitudeAtual)],
-                  destinations: [new google.maps.LatLng(record.latitude, record.longitude)],
-                  travelMode: 'DRIVING',
-                  //transitOptions: TransitOptions,
-                  drivingOptions: {
-                    departureTime: new Date(Date.now() + 1),  // for the time N milliseconds from now.
-                    trafficModel: 'optimistic'
-                  },
-                  //unitSystem: google.maps.UnitSystem.IMPERIAL,
-                  avoidHighways: false,
-                  avoidTolls: false,
-                }, callback);
-
-              function callback(response, status) {
-                var p1 =  new Promise(function () {
-                  var markerPos = new google.maps.LatLng(record.latitude, record.longitude);
-                  var marker = new google.maps.Marker({
-                    map: $scope.map,
-                    animation: google.maps.Animation.DROP,
-                    position: markerPos,
-                    label: 'E'
-                  });
-                  if (status == 'OK') {
-                    var destinationList = response.destinationAddresses;
-                    for (var i = 0; i < destinationList.length; i++) {
-                      var results = response.rows[i].elements;
-                      for (var j = 0; j < results.length; j++) {
-                        var element = results[j];
-                        if (element.status != 'ZERO_RESULTS') {
-                          if (element.distance.text != '')
-                            distanciaEstacionamento = element.distance.text;
-                          //console.log("distancia:"+distanciaEstacionamento);
-
-                          var infoWindowContent = "<h4>" + record.nome + " </h4><br>" +
-                              "Preço: R$" + record.preco + "<br>" +
-                              "À "+ distanciaEstacionamento + " de você. <br>"+
-                              '<a href="geo:?daddr='+ record.latitude + ',' + record.longitude +' target=\"_system\"> <span> Como chegar </span> </a></br>'
-                            //'<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.latitude + ',' + record.longitude + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
-                            ;
-
-                          var infoWindow = new google.maps.InfoWindow({
-                            content: infoWindowContent
-                          });
-
-                          google.maps.event.addListener(marker, 'click', function () {
-                            infoWindow.open($scope.map, marker);
-                          });
+                label: {
+                  text:'R$'+record.preco,
+                  fontSize: '9',
+                  color:'white'
                         }
-                      }
-                    }
-                  }
-                })
-              }
+              });
+
+              $scope.estacionamentos[i].marker = marker;
+
+              var infoWindowContent = "<h4>" + record.nome + " </h4><br>" +
+                  "<div>Preço: "+preco+"</div><br>" +
+                  //"Preço: R$" + record.preco + "<br>" +
+                  '<a href="geo:?daddr='+ record.latitude + ',' + record.longitude +' target=\"_system\"> <span> Como chegar </span> </a></br>'
+                //'<a target="_blank" jstcache="6" href="http://www.maps.google.com.br/?q' + record.latitude + ',' + record.longitude + 'z=14"> <span> Vizualizar no Google Maps </span> </a>'
+                ;
+
+              adicionarResumoInfo(marker, infoWindowContent, record);
             }
 
-
-            /*function adicionarResumoInfo(marker, message, record) {
+            function adicionarResumoInfo(marker, message) {
               var infoWindow = new google.maps.InfoWindow({
                 content: message
               });
 
               google.maps.event.addListener(marker, 'click', function () {
-                infoWindow.open($scope.map, marker);
+                  var content = infoWindow.getContent();
+                  //content += calcularDistancia(marker, latitudeAtual, longitudeAtual);
+                  infoWindow.setContent(content);
+                  infoWindow.open($scope.map, marker);
+
               });
-            }*/
+            }
             $ionicLoading.hide();
+            console.log($scope.estacionamentos);
           }).catch(function (response) {
             $ionicLoading.hide();
             $scope.showAlert(response.data.error);
@@ -645,7 +731,8 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           var marker = new google.maps.Marker({
             map: $scope.map,
             animation: google.maps.Animation.DROP,
-            position: markerPos
+            position: markerPos,
+            icon: { url : 'img/bluecircle.png' }
           });
         }, function (error) {
           alert('Unable to get location: ' + error.message);
@@ -665,7 +752,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     }
 
     //carrega
-    $ionicModal.fromTemplateUrl('my-modal.html', {
+    /*$ionicModal.fromTemplateUrl('my-modal.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
@@ -689,6 +776,8 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     $scope.$on('modal.removed', function() {
       // Execute action
     });
+
+    */
 
     /*
     if (!!$stateParams.id) {
@@ -833,22 +922,19 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
     };
 
     $scope.centerOnMe = function () {
-      console.log("Centering");
       if (!$scope.map) {
         return;
       }
       navigator.geolocation.getCurrentPosition(function (pos) {
-        console.log('Got pos', pos);
         $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
 
         $scope.marker = new google.maps.Marker({
           map: $scope.map,
           position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
         });
-
       }, function (error) {
-        alert('Não foi possível encontrar a posição: ' + error.message);
-      });
+        GlobalFunctions.showAlert('Não foi possível encontrar a posição: ' + error.message);
+      }, {timeout:50000});
     }
 
     $scope.inserirEstacionamento = function () {
@@ -864,8 +950,10 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
           $state.go('app.estacioneMain');
         }).catch(function (response) {
           //$ionicLoading.hide();
-          GlobalFunctions.showAlert('Aviso', 'Não foi possível gravar: ' + response.data.message);
+          GlobalFunctions.showAlert('Aviso', 'Não foi possível gravar: ' + response.error);
 
+        },function (error) {
+          GlobalFunctions.showAlert('Não foi possível finalizar seu cadastro, tente novamente mais tarde. ' + error.message);
         })
 
 
@@ -911,46 +999,66 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
 
   })
 
-  .controller('estadiaCtrl', function ($scope, $rootScope, $http, GlobalFunctions, $state, $cordovaBarcodeScanner) {
+  .controller('estadiaCtrl', function ($scope, $rootScope, $http, $ionicLoading, GlobalFunctions, $state, $cordovaBarcodeScanner) {
+    $scope.estadiaEmAndamento = false;
     $scope.estadia = {};
-    $scope.estacionamento = {};
+    $scope.estadia.estacionamento = {};
     $scope.estadiasUsuario = {};
     $scope.startTime = 0;
 
-    $scope.isEstadiaAndamento = function () {
-      /*$http.get($rootScope.url + '/estadia/usuario/?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
-        $scope.estadia = response.data;
-        return (!$scope.estadia);
+    $scope.carregarEstacionamento = function (id) {
+      $http.get($rootScope.url + '/estacionamento/'+id+'?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
+        $scope.retorno = response;
+        $scope.estacionamento = $scope.retorno.data;
+        console.log($scope.estacionamento);
       }).catch(function (response) {
-        //$ionicLoading.hide();
-        GlobalFunctions.showAlert('Erro', 'Não consultar estadias: ' + response.data.message);
-        return false;
-      })*/
-      //console.log("Consultou andamento");
-      return $scope.estadia.idEstacionamento > 0;
+        $scope.showAlert("Não foi possível obter dados do estacionamento. :" + response.data.error);
+        console.log("deu merda");
+      })
+     }
 
+    $scope.isEstadiaAndamento = function () {
+      return $scope.estadiaEmAndamento;
+    }
+
+    $scope.showLoading = function () {
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+    }
+
+    $scope.hideLoading = function () {
+      $ionicLoading.hide();
     }
 
     $scope.verificaEstadiaAndamento = function () {
+      $scope.showLoading();
       console.log("Verificando se há estadia em andamento...");
+      $scope.estadiaEmAndamento = false;
       $http.get($rootScope.url + '/estadia/estadiaAberta/?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
-        $scope.estadia.idEstadia = response.data.idEstadia;
-        $scope.estadia.idEstacionamento = response.data.idEstacionamento;
-        var dataEntrada = new Date(response.data.dataEntrada);
-        $scope.estadia.dataEntrada = dataEntrada;
-        //$scope.estadia.idUsuario = response.data.idUsuario;
-        $scope.estacionamento.valorHora = 15;
-        console.log($scope.estadia);
-          if ($scope.estadia.idEstacionamento > 0) {
-            $scope.startTime = dataEntrada.getTime();
-            $scope.timerConsole = '';
-            $scope.timerType = '';
-            $scope.$broadcast('timer-start');
-            $scope.timerRunning = true;
-            console.log("Encontrou estadia: " + $scope.estadia);
-          }
+        if (response.data.idEstadia != null) {
+          $scope.estadiaEmAndamento = true;
+          $scope.estadia = response.data;
+        }
 
+        console.log($scope.estadiaEmAndamento);
+        if ($scope.estadiaEmAndamento == true) {
+          var dataEntrada = new Date(response.data.dataEntrada);
+          $scope.estadia.dataEntrada = dataEntrada;
+          $scope.startTime = dataEntrada.getTime();
+          $scope.timerConsole = '';
+          $scope.timerType = '';
+          $scope.$broadcast('timer-start');
+          $scope.timerRunning = true;
+          console.log("Encontrou estadia: " + $scope.estadia);
+        }
+        $scope.hideLoading();
        }).catch(function (response) {
+        $scope.hideLoading();
         if (response.data.error == 'invalid_token') {
           console.log("token inválido.");
           $state.go("login");
@@ -971,6 +1079,7 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
 
     $scope.scanNow = function() {
       console.log("iniciando estadia...");
+
       //delete $scope.timer;
 
       //$cordovaBarcodeScanner.scan().then(function(imageData) {
@@ -982,24 +1091,25 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
         var idEstacionamento = parseInt("1", idEstacionamento); //imageData.text
         //$scope.estadia.idEstacionamento = parseInt(imageData.text, $scope.estadia.idEstacionamento);
         //$scope.estadia.dataEntrada = data.toLocaleString()+" "+data.getHours()+":"+data.getMinutes();
-        $scope.estacionamento.valorHora = 15;
 
-
+        $scope.showLoading();
         //console.log($scope.estacionamento);
         $http.post($rootScope.url + '/estadia/iniciarEstadia/'+idEstacionamento+'?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
           //delete $scope.estadia;
+          $scope.estadiaEmAndamento = true;
           $scope.estadia = response.data;
           $scope.estadia.dataEntrada = response.data.dataEntrada;
           var inicio = new Date(response.data.dataEntrada);
           $scope.startTime = new Date(); // $scope.estadia.dataEntrada;
-          $scope.estadia.idEstacionamento = response.data.idEstacionamento;
           //$scope.startTime = dataEntrada;
           $scope.timerConsole = '';
           $scope.timerType = '';
           $scope.$broadcast('timer-start');
           $scope.timerRunning = true;
+          $scope.hideLoading();
           GlobalFunctions.showAlert('Aviso', 'Checkin confirmado!');
         }).catch(function (response) {
+          $scope.hideLoading();
           GlobalFunctions.showAlert('Aviso', 'Não foi possível realizar checkin: ' + response.data.message);
         })
 
@@ -1019,17 +1129,20 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
         var idEstacionamento = parseInt("1", idEstacionamento); //imageData.text
 
         //$scope.estadia.dataSaida = dataSaida.toLocaleString()+" "+dataSaida.getHours()+":"+dataSaida.getMinutes();
-        //$scope.estadia.preco = 30;
+        $scope.showLoading();
         $http.post($rootScope.url + '/estadia/finalizarEstadia/'+ idEstacionamento +'?access_token=' + window.sessionStorage.getItem('token'), $scope.estadia).then(function (response) {
           //$scope.estadia = response.data;
-          $scope.estadia.idEstacionamento = 0;
-          $scope.estadia = {};
+          $scope.estadiaEmAndamento = false;
+          delete $scope.estadia;
+          delete $scope.estadia.estacionamento;
           $scope.timerRunning = false;
           $scope.timerConsole = '';
           $scope.timerType = '';
           $scope.$broadcast('timer-stop');
+          $scope.hideLoading();
           GlobalFunctions.showAlert('Aviso', 'Checkout confirmado!');
         }).catch(function (response) {
+          $scope.hideLoading();
           GlobalFunctions.showAlert('Aviso', 'Não foi possível realizar checkout: ' + response.data.message);
 
         })
@@ -1042,80 +1155,33 @@ var app = angular.module('starter.controllers', ['ionic.wizard', 'ion-datetime-p
       if (args.minutes < 15 && args.hours == 0)
         $scope.timerConsole = "Livre até 15 minutos"; //($scope.estacionamento.valorHora).toFixed(2).replace(".",",");
       else if (args.minutes > 15 && args.hours <= 1)
-        $scope.timerConsole = 'R$'+($scope.estacionamento.valorHora);//.toFixed(2).replace(".",",");
-      else
-        $scope.timerConsole = 'R$'+($scope.estacionamento.valorHora * args.hours).toFixed(2).replace(".",",");
+        $scope.timerConsole = 'R$'+($scope.estadia.estacionamento.preco);//.toFixed(2).replace(".",",");
+      else {
+        var indice = args.hours + 1;
+        $scope.timerConsole = 'R$'+($scope.estadia.estacionamento.preco * indice).toFixed(2).replace(".",",");
+      }
+
     });
 
     $scope.carregarEstadiasUsuario = function () {
+      $scope.showLoading();
       console.log("Buscando lista de estadias do usuário...");
       $http.get($rootScope.url + '/estadia/usuario/?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
         $scope.retorno = response;
         //var estadiasUsuario;
         $scope.estadiasUsuario = $scope.retorno.data;
-
         for (var i = 0; i < $scope.estadiasUsuario.length; i++) {
           $scope.estadiasUsuario[i].dataEntrada = new Date($scope.estadiasUsuario[i].dataEntrada);
-          $scope.estadiasUsuario[i].dataSaida = new Date($scope.estadiasUsuario[i].dataSaida);
+          if ($scope.estadiasUsuario[i].dataSaida > 0)
+            $scope.estadiasUsuario[i].dataSaida = new Date($scope.estadiasUsuario[i].dataSaida);
         }
-         console.log($scope.estadiasUsuario);
-
+        $scope.hideLoading();
       }).catch(function (response) {
+        $scope.hideLoading();
         GlobalFunctions.showAlert('Erro', 'Não foi possível consultar estadias: ' + response.data.message);
       })
     }
-    /*
-    $scope.$on('timer-stopped', function (event, data){
-      console.log('Timer Stopped - data = ', data);
-      $scope.$broadcast('reset');
-    });
-    */
-
-
   });
-
-  /*
-  .controller('contribuirEventoController', function ($scope, $rootScope, $http, $state, $ionicHistory, $stateParams, $ionicLoading, $rootScope) {
-    if (!!$stateParams.id) {
-      $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
-      var terminou = false;
-      $http.get($rootScope.url + '/evento/' + $stateParams.id + '?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
-        $scope.evento = response.data;
-        // if(terminou){
-        $ionicLoading.hide();
-        // }
-        terminou = true
-      });
-      $http.get($rootScope.url + '/necessidade/' + $stateParams.id + '?access_token=' + window.sessionStorage.getItem('token')).then(function (response) {
-        $scope.necessidades = response.data;
-        $scope.necessidadesOriginal = angular.copy($scope.necessidades);
-      });
-      $scope.salvaNecessidade = function () {
-        angular.forEach($scope.necessidades, function (necessidade, key) {
-          $http.post($rootScope.url + '/necessidade/' + $scope.evento.id + '/' + necessidade.id + '?access_token=' + window.sessionStorage.getItem('token'), necessidade).then(function (response) {
-            $state.go('app.eventosList');
-            delete $scope.necessidades;
-          });
-        });
-      }
-
-      $scope.isContribuir = function () {
-        for (necessidade in $scope.necessidades) {
-          if (!$scope.necessidades[necessidade].contribuidor) {
-            return true;
-          }
-        }
-        return false;
-      }
-    }
-  });
-*/
 
 
 

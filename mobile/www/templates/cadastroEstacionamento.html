@@ -12,31 +12,31 @@
                 <div class="item item-text-wrap">
                   <div class="list">
                     <label class="item item-input">
-                      <input type="text" ng-model="estacionamento.nome" placeholder="Nome do estacionamento" ng-required="true">
+                      <input type="text" ng-model="estacionamento.nome" placeholder="Nome do Estacionamento" ng-required="true">
                       <code>{{form.input.$error.required}}</code>
                     </label>
                     <label class="item item-input">
-                      <input type="number" ng-model="estacionamento.preco" placeholder="Preço cobrado" ng-required="true"></input>
+                      <input type="number"  ng-model="estacionamento.preco" placeholder="Preço por Hora (R$)" ng-required="true">
                       <code>{{form.input.$error.required}}</code>
                     </label>
                     <label class="item item-input">
-                      <textarea type="text" placeholder="Complemento do endereço" ng-model="estacionamento.complementoLocalizacao"></textarea>
+                      <textarea type="text" placeholder="Informações Adicionais" ng-model="estacionamento.complementoLocalizacao"></textarea>
                     </label>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <ion-footer-bar class="bar-subfooter bar-dark">
-            <div class="col col-center">
-               <button class="button button-block button-dark" ion-wizard-next>
-                 <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
-                </button>
-            </div>
-          </ion-footer-bar>
-          <ion-footer-bar class="bar-stable">
-          </ion-footer-bar>
         </ion-content>
+        <ion-footer-bar class="bar-subfooter bar-dark">
+          <div class="col col-center">
+            <button class="button button-block button-dark" ion-wizard-next>
+              <a class="button  button-clear">Próximo</a>
+            </button>
+          </div>
+        </ion-footer-bar>
+        <ion-footer-bar class="bar-stable">
+        </ion-footer-bar>
       </ion-slide-page>
       <ion-slide-page ion-wizard-step>
         <div class="row" id="pac-container">
@@ -50,12 +50,15 @@
           <ion-footer-bar class="bar-subfooter bar-dark">
             <div class="col col-center">
               <button class="button button-block button-dark" ion-wizard-previous>
-                <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
+                <a class="button  button-clear">Anterior</a>
               </button>
             </div>
             <div class="col col-center">
-              <button class="button button-block button-dark" ion-wizard-next>
+              <!--button class="button button-block button-dark" ion-wizard-next>
                 <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
+              </button-->
+              <button class="button button-block button-dark" ng-click="inserirEstacionamento()">
+                <a class="button button-clear">Confirmar</a>
               </button>
             </div>
           </ion-footer-bar>
@@ -63,7 +66,7 @@
           </ion-footer-bar>
         </div>
       </ion-slide-page>
-      <ion-slide-page ion-wizard-step>
+      <!--ion-slide-page ion-wizard-step>
         <ion-content class="page">
           <div class="bar-header padding text-center">
             <h2 class="title" style="color: #eeeeee;">Dias da Semana</h2>
@@ -106,27 +109,26 @@
               </div>
             </div>
           </div>
-          <ion-footer-bar class="bar-subfooter bar-dark">
-            <div class="col col-center">
-              <button class="button button-block button-dark" ion-wizard-previous>
-                <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
-              </button>
-            </div>
-            <div class="col col-center">
-              <button class="button button-block button-dark" ion-wizard-next>
-                <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
-              </button>
-            </div>
-
-          </ion-footer-bar>
-          <ion-footer-bar class="bar-stable">
-          </ion-footer-bar>
         </ion-content>
-      </ion-slide-page>
-      <ion-slide-page ion-wizard-step >
+        <ion-footer-bar class="bar-subfooter bar-dark">
+          <div class="col col-center">
+            <button class="button button-block button-dark" ion-wizard-previous>
+              <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
+            </button>
+          </div>
+          <div class="col col-center">
+            <button class="button button-block button-dark" ion-wizard-next>
+              <a class="button icon-right ion-chevron-right button-clear">Próximo</a>
+            </button>
+          </div>
+        </ion-footer-bar>
+        <ion-footer-bar class="bar-stable">
+        </ion-footer-bar>
+      </ion-slide-page-->
+      <!--ion-slide-page ion-wizard-step >
         <ion-content class="page" scroll="false">
           <div class="bar-header padding text-center">
-            <h1 class="title" style="color: #eeeeee;">Horários</h1>
+            <h3 class="title" style="color: #eeeeee;">Horários</h3>
           </div>
           <div class="row">
             <div class="col col-center">
@@ -137,24 +139,37 @@
                       <ion-modal-view >
                         <ion-content class="page" scroll="false">
                           <div class="bar-header padding text-center">
-                            <h1 class="title" style="color: #eeeeee;">Definir Horário</h1>
+                            <h3 class="title" style="color: #eeeeee;">Definir Horário</h3>
                           </div>
-                          <ion-item class="item item-input-inset row" >
-                            <ion-list>
-                              <div class="item item-icon-right" ion-datetime-picker time ng-model="horario.segunda.inicio" >
-                                <i class="icon ion-ios-time dark"></i>
-                                Abre às <span> {{horario.segunda.inicio| date: "HH:mm"}} </span>
+                          <div class="row">
+                            <div class="col col-center">
+                              <div class="card rounded">
+                                <div class="item item-text-wrap">
+                                  <div class="list">
+                                    <div class="item item-input-inset row" >
+                                      <ion-list class="button-bar">
+                                        <button class="button button-full button-dark" ion-datetime-picker time ng-model="horario.segunda.inicio" >
+
+                                          <a class="icon icon-right ion-ios-time"></a>
+                                          Abre às <span> {{horario.segunda.inicio| date: "HH:mm"}} </span>
+                                        </button>
+                                        <button class="button button-full button-dark" ion-datetime-picker time ng-model="horario.segunda.fim" >
+                                          <i class="icon ion-ios-time dark"></i>
+                                          Fecha às <span> {{horario.segunda.fim| date: "HH:mm"}} </span>
+                                        </button>
+                                        <ion-item>
+                                          <button class="button button-block button-dark" ng-click="closeModal()">
+                                            Confirmar!
+                                          </button>
+                                        </ion-item>
+                                      </ion-list>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <div class="item item-icon-right" ion-datetime-picker time ng-model="horario.segunda.fim" >
-                                <i class="icon ion-ios-time dark"></i>
-                                Fecha às <span> {{horario.segunda.fim| date: "HH:mm"}} </span>
-                              </div>
-                              <ion-item>
-                                <button class="button button-block button-dark" ng-click="closeModal()">
-                                  Confirmar!
-                                </button>
-                              </ion-item>
-                          </ion-list>
+                            </div>
+                          </div>
+
                         </ion-content>
                       </ion-modal-view>
                     </script>
@@ -185,23 +200,24 @@
                 </div>
               </div>
             </div>
-            <ion-footer-bar class="bar-subfooter bar-dark">
-              <div class="col col-center">
-                <button class="button button-block button-dark" ion-wizard-previous>
-                  <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
-                </button>
-              </div>
-              <div class="item-divider-platform"></div>
-              <div class="col col-center">
-                <button class="button button-block button-dark" ng-click="inserirEstacionamento()">
-                  Finalizar!
-                </button>
-              </div>
-            </ion-footer-bar>
-            <ion-footer-bar class="bar-stable">
-            </ion-footer-bar>
+
           </div>
         </ion-content>
-      </ion-slide-page>
+        <ion-footer-bar class="bar-subfooter bar-dark">
+          <div class="col col-center">
+            <button class="button button-block button-dark" ion-wizard-previous>
+              <a class="button icon-left ion-chevron-left button-clear">Anterior</a>
+            </button>
+          </div>
+          <div class="item-divider-platform"></div>
+          <div class="col col-center">
+            <button class="button button-block button-dark" ng-click="inserirEstacionamento()">
+              Finalizar!
+            </button>
+          </div>
+        </ion-footer-bar>
+        <ion-footer-bar class="bar-stable">
+        </ion-footer-bar>
+      </ion-slide-page-->
     </ion-slides>
   </ion-view>

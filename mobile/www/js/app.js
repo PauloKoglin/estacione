@@ -106,7 +106,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
           }
         }
       })
-
+/*
       .state('app.eventosList', {
         url: '/eventosList',
         views: {
@@ -114,8 +114,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
             templateUrl: 'templates/eventosList.html'
           }
         }
-      })
-
+      })*/
+/*
       .state('app.novoEvento', {
         url: '/novoEvento?id',
         views: {
@@ -124,13 +124,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
             controller: 'novoEventoWizardController'
           }
         }
-      })
-      .state('app.contribuirEvento', {
-        url: '/contribuirEvento?id',
+      })*/
+      .state('app.pagamento', {
+        url: '/pagamento',
         views: {
           'menuContent': {
-            templateUrl: 'templates/eventoContribuir.html',
-            controller: 'contribuirEventoController'
+            templateUrl: 'templates/pagamento.html',
+            controller: 'pagamentoCtrl'
           }
         }
       })

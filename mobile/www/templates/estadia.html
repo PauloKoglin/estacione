@@ -16,7 +16,8 @@
                   Tempo decorrido : {{hhours}}:{{mminutes}}:{{sseconds}}
                   <!--br>Preço Estimado : R$ <span ng-bind="seconds * getTimeTimer(sseconds)"></span></br-->
                 </timer>
-                <br><span>Preço Estimado : {{timerConsole}}</span> </br>
+                <br><span ng-show="estadia.estacionamento.preco > 0">Preço Estimado : {{timerConsole}}</span> </br>
+                <br><span ng-show="estadia.estacionamento.preco == 0">Preço Estimado : Calculando...</span> </br>
 
                 <!--br>Preço Estimado : R$ <span ng-bind="3 * getTimeTimer()"></span></br-->
               </h4>

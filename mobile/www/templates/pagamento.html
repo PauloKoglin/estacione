@@ -1,0 +1,37 @@
+<ion-view class="page" title="Forma de Pagamento" ng-controller="pagamentoCtrl" >
+  <ion-content padding="true" scroll="false" ng-init="carregarCartao()">
+    <form>
+      <div class="row responsive-md">
+        <div class="col col-50 col-offset-25">
+          <div class="list">
+            <span class="input-label" style="color: #eeeeee;">Identificação</span>
+            <label class="item item-input">
+              <input type="text" placeholder="Número do cartão" ng-model="cartao.numero">
+            </label>
+            <label class="item item-input">
+              <input type="text" placeholder="Nome impresso no cartão" ng-model="cartao.nome">
+            </label>
+            <span class="input-label" style="color: #eeeeee;">Validade</span>
+            <div class="item item-input-inset">
+              <label class="item item-input">
+                <input type="text" placeholder="Mês" ng-model="cartao.mes">
+              </label>
+              <label class="item item-input">
+                <input type="number" placeholder="Ano" ng-model="cartao.ano">
+              </label>
+            </div>
+            <span class="input-label" style="color: #eeeeee;">DVV</span>
+            <label class="item item-input">
+              <input type="number" placeholder="Código de segurança" ng-model="cartao.codigo">
+            </label>
+          </div>
+          <div class="button-bar">
+            <button class="button button-block button-dark" ng-click="cadastrarCartao(cartao)" ng-disabled="!cartao.numero||!cartao.nome||!cartao.mes||!cartao.ano||!cartao.codigo">
+              Gravar
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
