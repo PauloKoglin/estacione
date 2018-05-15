@@ -1,0 +1,29 @@
+<ion-view view-title="Estadia" id="deviceready" hide-nav-bar="false" class="page" >
+  <ion-content padding="true" scroll="false" ng-controller="estadiaCtrl" ng-init="verificaEstadiaAndamento()">
+      <!--h2 on-create="verificarEstadia(value)" class="bar-subheader padding text-center">{{value}}</h2-->
+      <div class="row responsive-md">
+        <div class="col col-50 col-offset-25">
+          <div class="button-bar-inline">
+            <button ng-show="isEstadiaAndamento()" class="button button-block button-dark" ng-click="terminarEstadia('poll-server')">Terminar</button>
+            <button ng-show="!isEstadiaAndamento()"  class="button button-block button-dark" ng-click="scanNow('poll-server')">Iniciar</button>
+            <div ng-show="isEstadiaAndamento()" class="list-item" timer-controls ng-init="timerType = 'Polling Server'">
+              <h2 class="title" style="color: #eeeeee;">
+                 Estadia em andamento
+              </h2>
+              <h4 class="title" style="color: #eeeeee;">
+                Entrada: {{estadia.dataEntrada | date : 'dd/MM/yyyy HH:mm'}}</br>
+                <timer start-time="startTime" interval="1000" auto-start="false"">
+                  Tempo decorrido : {{hhours}}:{{mminutes}}:{{sseconds}}
+                  <!--br>Preço Estimado : R$ <span ng-bind="seconds * getTimeTimer(sseconds)"></span></br-->
+                </timer>
+                <br><span>Preço Estimado : {{timerConsole}}</span> </br>
+
+                <!--br>Preço Estimado : R$ <span ng-bind="3 * getTimeTimer()"></span></br-->
+              </h4>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </ion-content>
+</ion-view>

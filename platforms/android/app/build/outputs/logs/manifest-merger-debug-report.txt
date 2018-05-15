@@ -1,0 +1,169 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+MERGED from [:barcodescanner-release-2.1.5:] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\bdcc5f7b8717af78b74b09ea44e18eda\AndroidManifest.xml:2:1-14:12
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\5480763b215a8ea608114263e580b8cb\AndroidManifest.xml:17:1-22:12
+MERGED from [:CordovaLib] C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:20:1-27:12
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\353eae7ac0583807b4b72cc006d21947\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\6184eaaa45f0f2454af19750c0f207a3\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\23b1859b97b2afa2a8580208b55829a0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\f7f9bb93a029e77eda007cf1048192a3\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\22d8c1b8a2b3b2846a0eab39cb13cb6d\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\81d0c83bca0cb8abab6ad716d3173aaf\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\965379bd8c1693d9ea04776f4a011673\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\a13a1c38006ec759b44a009f86029cd5\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\5bf34f91f8485ad9e3697fb80a81424d\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:1-22:12
+	package
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:98-148
+		INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:70-97
+		INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml
+	android:hardwareAccelerated
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:11-45
+	xmlns:android
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:149-207
+	android:versionCode
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:2:46-69
+		INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml
+supports-screens
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:5-191
+	android:largeScreens
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:49-76
+	android:smallScreens
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:132-159
+	android:normalScreens
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:77-105
+	android:xlargeScreens
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:160-188
+	android:resizeable
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:106-131
+	android:anyDensity
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:3:23-48
+uses-permission#android.permission.INTERNET
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:4:5-67
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:4:22-64
+application
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:5:5-14:19
+MERGED from [:barcodescanner-release-2.1.5:] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\bdcc5f7b8717af78b74b09ea44e18eda\AndroidManifest.xml:11:5-12:19
+MERGED from [:barcodescanner-release-2.1.5:] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\bdcc5f7b8717af78b74b09ea44e18eda\AndroidManifest.xml:11:5-12:19
+	android:supportsRtl
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:5:114-140
+	android:label
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:5:81-113
+	android:hardwareAccelerated
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:5:18-52
+	android:icon
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:5:53-80
+activity#com.ionicframework.estacionemobile856984.MainActivity
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:9-11:20
+	android:label
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:97-134
+	android:launchMode
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:135-165
+	android:windowSoftInputMode
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:257-299
+	android:configChanges
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:19-96
+	android:theme
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:194-256
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:6:166-193
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:7:13-10:29
+	android:label
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:7:28-65
+action#android.intent.action.MAIN
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:8:17-69
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:8:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:9:17-77
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:9:27-74
+activity#com.google.zxing.client.android.CaptureActivity
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:9-311
+	android:clearTaskOnLaunch
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:19-51
+	android:windowSoftInputMode
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:261-308
+	android:exported
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:114-138
+	android:configChanges
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:52-113
+	android:theme
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:202-260
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:12:139-201
+activity#com.google.zxing.client.android.encode.EncodeActivity
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:13:9-112
+	android:label
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:13:19-40
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:13:41-109
+uses-sdk
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:15:5-74
+MERGED from [:barcodescanner-release-2.1.5:] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\bdcc5f7b8717af78b74b09ea44e18eda\AndroidManifest.xml:7:5-9:41
+MERGED from [:barcodescanner-release-2.1.5:] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\barcodescanner-release-2.1.5.aar\bdcc5f7b8717af78b74b09ea44e18eda\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\5480763b215a8ea608114263e580b8cb\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\5480763b215a8ea608114263e580b8cb\AndroidManifest.xml:20:5-44
+MERGED from [:CordovaLib] C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:25:5-44
+MERGED from [:CordovaLib] C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:25:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\353eae7ac0583807b4b72cc006d21947\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\353eae7ac0583807b4b72cc006d21947\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\6184eaaa45f0f2454af19750c0f207a3\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\6184eaaa45f0f2454af19750c0f207a3\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\23b1859b97b2afa2a8580208b55829a0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\23b1859b97b2afa2a8580208b55829a0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\f7f9bb93a029e77eda007cf1048192a3\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\f7f9bb93a029e77eda007cf1048192a3\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\22d8c1b8a2b3b2846a0eab39cb13cb6d\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\22d8c1b8a2b3b2846a0eab39cb13cb6d\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\81d0c83bca0cb8abab6ad716d3173aaf\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\81d0c83bca0cb8abab6ad716d3173aaf\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\965379bd8c1693d9ea04776f4a011673\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\965379bd8c1693d9ea04776f4a011673\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\a13a1c38006ec759b44a009f86029cd5\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\a13a1c38006ec759b44a009f86029cd5\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\5bf34f91f8485ad9e3697fb80a81424d\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\PauloArnoldo\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\5bf34f91f8485ad9e3697fb80a81424d\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:15:42-71
+	android:minSdkVersion
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:15:15-41
+uses-permission#android.permission.CAMERA
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:16:5-65
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:16:22-62
+uses-permission#android.permission.FLASHLIGHT
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:17:5-69
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:17:22-66
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:18:5-81
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:18:22-78
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:19:5-79
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:19:22-76
+uses-permission#android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:20:5-89
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:20:22-86
+uses-feature#android.hardware.camera
+ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:21:5-84
+	android:required
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:21:58-81
+	android:name
+		ADDED from C:\Dev\Git-fontes\webapps\estacione\mobile\platforms\android\app\src\main\AndroidManifest.xml:21:19-57

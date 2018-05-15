@@ -1,0 +1,44 @@
+<ion-view ng-controller="cadastroUsuarioCtrl" >
+<ion-content >
+  <ion-slides slider="swiper" options="sliderOptions" >
+    <ion-slide-page class="page" ng-repeat="slide in slides" >
+      <div class="item-body">
+        <button class="button button-clear button-calm" style="padding-left: 75%; padding-top: 2%" ui-sref="login">
+          <a class="button icon-right ion-chevron-right button-clear button-stable">Entrar</a>
+        </button>
+      </div>
+      <div class="item item-avatar">
+        <h1 class="slide-title" ng-bind-html="slide.title"></h1>
+      </div>
+      <div class="item item-body">
+        <img class="full-image" ng-src="{{slide.image}}">
+        <p ng-bind-html="slide.description"></p>
+      </div>
+      <div class="item-body">
+        <button class="button button-clear button-calm" style="padding-left: 70%; padding-top: 2%" on-slide-changed="slideHasChanged($index+1)">
+          <a class="button icon-right ion-chevron-right button-clear button-stable">Próximo</a>
+        </button>
+      </div>
+    </ion-slide-page>
+    <ion-slide-page class="page">
+      <div class="item-body">
+        <button class="button button-clear button-calm" style="padding-left: 75%; padding-top: 2%" ui-sref="login">
+          <a class="button icon-right ion-chevron-right button-clear button-stable">Entrar</a>
+        </button>
+      </div>
+      <div class="item item-avatar">
+        <h1 class="slide-title">Não tem conta? Cadastre-se.</h1>
+      </div>
+      <div class="item item-body">
+        <button class="button button-block button-dark" ng-click="setUserMotorista(true)">
+          Para Motoristas
+        </button>
+        <button class="button button-block button-dark" ng-click="setUserMotorista(false)">
+          Para Estacionamentos
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </div>
+    </ion-slide-page>
+  </ion-slides>
+</ion-content>
+  </ion-view>

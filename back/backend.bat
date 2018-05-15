@@ -1,1 +1,0 @@
-java -jar target/estacione-0.1.0.jar
